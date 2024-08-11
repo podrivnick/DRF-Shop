@@ -1,0 +1,4 @@
+docker_compose/
+*.pyc
+README.md
+.idea/

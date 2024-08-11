@@ -1,0 +1,84 @@
+[tool.poetry]
+name = "shop"
+version = "0.1.0"
+description = ""
+authors = ["podrivnick <vp419193@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1"
+djangorestframework = "^3.15.2"
+django-environ = "^0.11.2"
+psycopg2 = "^2.9.9"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.8.0"
+pyupgrade = "^3.17.0"
+add-trailing-comma = "^3.1.0"
+autoflake = "^2.3.1"
+isort = "^5.13.2"
+docformatter = "^1.7.5"
+flake8 = "^7.1.1"
+flake8-builtins = "^2.5.0"
+flake8-commas = "^4.0.0"
+flake8-debugger = "^4.1.2"
+flake8-comprehensions = "^3.15.0"
+flake8-eradicate = "^1.5.0"
+dlint = "^0.15.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flake8]
+max-line-length = 120
+ignore = [
+    "E203",
+    "E266",
+    "E501",
+    "W503",
+    "E800",
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "docs/source/conf.py",
+    "old",
+    "build",
+    "dist",
+]
+
+[tool.isort]
+multi_line_output=3
+include_trailing_comma=true
+line_length=120
+lines_after_imports=2
+lines_between_sections=1
+lines_between_types=0
+force_alphabetical_sort_within_sections=true
+ensure_newline_before_comments=true
+combine_as_imports=true
+combine_star=true
+skip_gitignore=true
+balanced_wrapping=true
+force_grid_wrap=2
+src_paths=["core", ]
+skip_glob=[
+    ".git",
+    ".idea",
+    ".vscode",
+    "venv",
+    ".venv",
+]
+known_django=["django","rest_framework"]
+known_first_party=["core"]
+sections=[
+    "FUTURE",
+    "STDLIB",
+    "DJANGO",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
+]
