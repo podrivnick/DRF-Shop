@@ -1,11 +1,13 @@
 .env
 *.pyc
 
+!core/project/settings/local.py
+core/project/settings/local.py
+
 __pycache__/
 .idea/
-.vscode/ 
+.vscode/
 backups/
 nginx/
 
-core/project/settings/local.py
 docker_compose/nginx.yaml
