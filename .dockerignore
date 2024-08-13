@@ -1,4 +1,13 @@
-docker_compose/
-*.pyc
-README.md
-.idea/
+shop/*.pyc
+
+shop/*.md
+
+shop/.idea/
+shop/docker_compose/
+shop/__pycache__/
+
+shop/core/project/settings/local_example.py
+
+shop/.git/
+shop/.pre-commit-config.yaml
+shop/.vscode/

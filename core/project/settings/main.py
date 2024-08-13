@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 """
 
+import os
 from pathlib import Path
 
 import environ
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     # first party
     'core.apps.orders.apps.OrdersConfig',
     'core.apps.products.apps.ProductsConfig',
+    'core.apps.users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'core.project.urls'
@@ -123,12 +126,23 @@ USE_I18N = True
 
 USE_TZ = True
 
+STORAGES = {
+    # ...
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Директория, где будут храниться собранные статические файлы
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+# Директории, откуда будут собираться статические файлы
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
