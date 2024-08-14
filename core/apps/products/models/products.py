@@ -34,6 +34,12 @@ class Product(TimeBaseModel):
         verbose_name='Products Tags',
     )
 
+    def sell_price(self) -> int:
+        if self.discoint:
+            return round(self.price - self.price * self.discount / 100, 2)
+
+        return self.price
+
     def __str__(self):
         return self.title
 
