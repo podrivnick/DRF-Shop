@@ -6,6 +6,8 @@ services:
     container_name: app-drf-shop
     ports:
       - "8000:8000"
+    expose:
+      - 8000
     command: "sh /entrypoint.sh"
     env_file:
       - ../.env

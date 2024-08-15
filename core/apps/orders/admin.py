@@ -30,7 +30,7 @@ class OrdersItemAdmin(admin.ModelAdmin):
         'id',
         'order',
         'product',
-        'name',
+        'title',
         'price',
         'quantity',
     )

@@ -40,14 +40,13 @@ class Order(TimeBaseModel):
         return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
 
 
-# TODO: change field name to title
 class OrdersItem(models.Model):
     order = models.ForeignKey(to=Order, on_delete=models.CASCADE, verbose_name="Заказ")
     product = models.ForeignKey(
         to=Product, on_delete=models.SET_DEFAULT,
         null=False, verbose_name="Продукт", default=1,
     )
-    name = models.CharField(max_length=150, verbose_name="Название")
+    title = models.CharField(max_length=150, verbose_name="Название")
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
     quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
 

@@ -12,7 +12,7 @@ class Product(TimeBaseModel):
     description = models.TextField(
         verbose_name='Product Description',
     )
-    discoint = models.DecimalField(
+    discount = models.DecimalField(
         blank=True,
         max_digits=10,
         decimal_places=2,
@@ -35,7 +35,7 @@ class Product(TimeBaseModel):
     )
 
     def sell_price(self) -> int:
-        if self.discoint:
+        if self.discount:
             return round(self.price - self.price * self.discount / 100, 2)
 
         return self.price

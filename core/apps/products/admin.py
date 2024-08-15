@@ -9,7 +9,7 @@ class ProductAdmin(admin.ModelAdmin):
         'id',
         'title',
         'description',
-        'discoint',
+        'discount',
         'price',
         'quantity',
         'tags',
