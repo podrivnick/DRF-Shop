@@ -11,3 +11,5 @@ backups/
 nginx/
 
 docker_compose/nginx.yaml
+
+!staticfiles/.gitkeep

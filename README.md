@@ -40,6 +40,7 @@ ___
 * `make app` - up application and database/infrastructure, with replication database
 * `make app-logs` - follow the logs in app container
 * `make app-down` - down application and all infrastructure
+* `make collectstatic` - collect all static files
 * `make migrate` - apply all made migrations
 * `make createsuperuser` - run command createsuperuser
 
@@ -48,6 +49,9 @@ ___
 * `make storages` - up only storages. you should run your application locally for debugging/developing purposes 
 * `make storages-logs` - follow the logs in storages containers
 * `make storages-down` - down all infrastructure
+* `make monitoring` - up APM Elastic application
+* `make monitoring-logs` - logs of APM Elastic container
+* `make monitoring-down` - down APM Elastic application
 * `make appbash` - enter into application container
 * `make dbbash` - enter into database container
 * `make full_clean` - clean up docker db containers with volume

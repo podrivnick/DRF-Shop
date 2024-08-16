@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 """
 
-import os
 from pathlib import Path
 
 import environ
@@ -28,9 +27,13 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "0.0.0.0",
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -42,6 +45,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # third party
+    'elasticapm.contrib.django',
+
     # first party
     'rest_framework',
     # first party
@@ -51,6 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "core.project.middlewares.ElasticApmMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,8 +147,10 @@ STORAGES = {
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Директория, где будут храниться собранные статические файлы
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 # Директории, откуда будут собираться статические файлы
 # Default primary key field type
@@ -159,3 +169,48 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 1,
 }
+
+
+ELASTIC_APM = {
+    'SERVICE_NAME': 'orders',
+    'SERVER_URL': env('APM_URL', default='http://apm-server:8200'),
+    'DEBUG': DEBUG,
+    'SERVER_TIMEOUT': '10s',
+    'CAPTURE_BODY': 'all',
+    "ENVIRONMENT": 'prod',
+    'USE_ELASTIC_EXCEPTHOOK': True,
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'verbose': {
+            'format': (
+                '%(levelname)s %(asctime)s %(module)s %(process)d '
+                '%(thread)d %(message)s error_meta:\n%(error_meta)s'
+            ),
+        },
+    },
+    'handlers': {
+        'elasticapm': {
+            'level': 'WARNING',
+            'class': 'elasticapm.contrib.django.handlers.LoggingHandler',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+    },
+}
+
+# ELASTIC_URL = env('ELASTIC_URL')  noqa
+# ELASTIC_PRODUCT_INDEX = env('ELASTIC_PRODUCT_INDEX', default='product-index')  noqa

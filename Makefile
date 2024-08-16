@@ -3,6 +3,7 @@ NGINX = docker_compose/nginx.yaml
 STORAGES_FILE = docker_compose/postgres.yaml
 STORAGES_FILE_COPY = docker_compose/backup.yaml
 APP_FILE = docker_compose/app.yaml
+MONITORING_FILE = docker_compose/monitoring.yaml
 EXEC = docker exec -it
 NGINX_CONTAINER = nginx
 DB_CONTAINER = ppostgres
@@ -16,6 +17,18 @@ ENTER_POSTGRES_CONTAINER = psql -U postgres -d drfshop
 RUN_MIGRATION = poetry run python manage.py migrate
 RUN_COLLECTSTATIC = poetry run python manage.py collectstatic --noinput
 RUN_CREATESUPERUSER = poetry run python manage.py createsuperuser
+
+.PHONY: monitoring
+monitoring:
+	${DC} -f ${MONITORING_FILE} ${ENV_FILE} up --build -d
+
+.PHONY: monitoring-logs
+monitoring-logs:
+	${DC} -f ${MONITORING_FILE} ${ENV} logs -f
+
+.PHONY: monitoring-down
+monitoring-down:
+	${DC} -f ${MONITORING_FILE} down
 
 .PHONY: nginx
 nginx:
