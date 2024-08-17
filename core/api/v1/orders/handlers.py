@@ -14,9 +14,7 @@ class CreateOrdersAPI(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
-        validated_data = serializer.initial_data
-
         service = CreateOrdersUseCase()
-        service.execute(validated_data['order_items'])
+        service.execute(serializer.to_entity())
 
-        return Response(serializer.initial_data, status=status.HTTP_201_CREATED, headers=self.headers)
+        return Response(service, status=status.HTTP_201_CREATED, headers=self.headers)

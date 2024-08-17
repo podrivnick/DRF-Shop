@@ -21,6 +21,7 @@ class OrderAdmin(admin.ModelAdmin):
         'total_price',
         'created_at',
         'updated_at',
+        'required_delivery',
     )
 
 

@@ -15,6 +15,7 @@ gunicorn = "^23.0.0"
 whitenoise = "^6.7.0"
 punq = "^0.7.0"
 elastic-apm = "^6.23.0"
+pydantic = "^2.8.2"
 
 
 [tool.poetry.group.dev.dependencies]

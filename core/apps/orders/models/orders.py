@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from core.apps.common.models import TimeBaseModel
+from core.apps.orders.schemas.order import OrderSchema
 from core.apps.products.models.products import Product
 
 
@@ -38,6 +39,22 @@ class Order(TimeBaseModel):
 
     def __str__(self):
         return f"Заказ № {self.pk} | Покупатель {self.user.first_name} {self.user.last_name}"
+
+    @classmethod
+    def from_entity(
+        cls,
+        order: OrderSchema,
+    ) -> 'Order':
+        return cls(
+            user=order.user,
+            name_receiver=order.name_receiver,
+            phone_number=order.phone_number,
+            required_delivery=order.required_delivery,
+            delivery_address=order.delivery_address,
+            payment_on_get=order.payment_on_get,
+            email=order.email,
+            total_price=order.total_price,
+        )
 
 
 class OrdersItem(models.Model):
