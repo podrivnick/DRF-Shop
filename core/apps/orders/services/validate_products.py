@@ -4,7 +4,6 @@ from abc import (
 )
 
 from core.apps.orders.exceptions.orders_exceptions import (
-    BaseExceptionOrder,
     NotEnoughQuantityProducts,
     NotFoundProductException,
 )
@@ -33,17 +32,12 @@ class ORMValidateProductService(BaseValidatePriductService):
             product_id = product['product_id']
             quantity = product['quantity']
 
-            try:
-                if product_id not in products_dict:
-                    raise NotFoundProductException(product=product_id)
+            if product_id not in products_dict:
+                raise NotFoundProductException(product=product_id)
 
-                if products_dict[product_id].quantity >= quantity:
-                    total_price += products_dict[product_id].sell_price() * quantity
-                else:
-                    raise NotEnoughQuantityProducts(product=product_id)
-
-            except BaseExceptionOrder as error:
-                print(error.message)
-                break
+            if products_dict[product_id].quantity >= quantity:
+                total_price += products_dict[product_id].sell_price() * quantity
+            else:
+                raise NotEnoughQuantityProducts(product=product_id)
 
         return total_price

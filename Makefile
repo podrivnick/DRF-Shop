@@ -85,3 +85,7 @@ dbbash:
 .PHONY: full_clean
 full_clean:
 	${DC} down -v --remove-orphans ${DB_CONTAINER} ${DB_CONTAINER_COPY}
+
+.PHONY: runtest
+runtest:
+	${EXEC} ${APP_CONTAINER} pytest

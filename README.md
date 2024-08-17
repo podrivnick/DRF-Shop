@@ -55,6 +55,7 @@ ___
 * `make appbash` - enter into application container
 * `make dbbash` - enter into database container
 * `make full_clean` - clean up docker db containers with volume
+* `make runtest` - run tests for main application
 
 ___
 ## Structure
