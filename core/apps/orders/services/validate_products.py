@@ -27,6 +27,7 @@ class ORMValidateProductService(BaseValidateProductService):
         products_dict = {product.pk: product for product in products}
 
         total_price = 0
+        all_data_products = []
 
         for product in order_items_data:
             product_id = product['product_id']
@@ -36,8 +37,19 @@ class ORMValidateProductService(BaseValidateProductService):
                 raise NotFoundProductException(product=product_id)
 
             if products_dict[product_id].quantity >= quantity:
-                total_price += products_dict[product_id].sell_price() * quantity
+                price_with_quantity = products_dict[product_id].sell_price() * quantity
+
+                total_price += price_with_quantity
+
+                all_data_products.append(
+                    {
+                        'product': product_id,
+                        'title': products_dict[product_id].title,
+                        'price': price_with_quantity,
+                        'quantity': quantity,
+                    },
+                )
             else:
                 raise NotEnoughQuantityProducts(product=product_id)
 
-        return total_price
+        return total_price, all_data_products

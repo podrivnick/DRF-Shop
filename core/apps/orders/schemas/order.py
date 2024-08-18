@@ -28,3 +28,16 @@ class OrderSchema:
     class Config:
         max_anystr_length = 60
         anystr_strip_whitespace = True
+
+
+@dataclass
+class OrderItemsResponseSchema:
+    product: int
+    title: str
+    price: Decimal
+    quantity: int
+
+
+@dataclass
+class OrderItemsSchema:
+    items: List[OrderItemsResponseSchema]

@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party
-    'elasticapm.contrib.django',
+    # 'elasticapm.contrib.django',
 
     # first party
     'rest_framework',
@@ -58,7 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "core.project.middlewares.ElasticApmMiddleware",
+    # "core.project.middlewares.ElasticApmMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -171,15 +171,15 @@ REST_FRAMEWORK = {
 }
 
 
-ELASTIC_APM = {
-    'SERVICE_NAME': 'orders',
-    'SERVER_URL': env('APM_URL', default='http://apm-server:8200'),
-    'DEBUG': DEBUG,
-    'SERVER_TIMEOUT': '10s',
-    'CAPTURE_BODY': 'all',
-    "ENVIRONMENT": 'prod',
-    'USE_ELASTIC_EXCEPTHOOK': True,
-}
+# ELASTIC_APM = {
+#     'SERVICE_NAME': 'orders',
+#     'SERVER_URL': env('APM_URL', default='http://apm-server:8200'),
+#     'DEBUG': DEBUG,
+#     'SERVER_TIMEOUT': '10s',
+#     'CAPTURE_BODY': 'all',
+#     "ENVIRONMENT": 'prod',
+#     'USE_ELASTIC_EXCEPTHOOK': True,
+# }
 
 LOGGING = {
     'version': 1,

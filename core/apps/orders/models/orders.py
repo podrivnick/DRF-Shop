@@ -2,7 +2,10 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from core.apps.common.models import TimeBaseModel
-from core.apps.orders.schemas.order import OrderSchema
+from core.apps.orders.schemas.order import (
+    OrderItemsSchema,
+    OrderSchema,
+)
 from core.apps.products.models.products import Product
 
 
@@ -78,4 +81,18 @@ class OrdersItem(models.Model):
         return round(self.product.sell_price() * self.quantity, 2)
 
     def __str__(self):
-        return f"Товар {self.name} | Заказ № {self.order.pk}"
+        return f"Товар {self.title} | Заказ № {self.order.pk}"
+
+    @classmethod
+    def from_entity(
+        cls,
+        order_id: int,
+        item_product: OrderItemsSchema,
+    ) -> 'OrdersItem':
+        return cls(
+            order_id=order_id,
+            product_id=item_product.product,
+            title=item_product.title,
+            price=item_product.price,
+            quantity=item_product.quantity,
+        )

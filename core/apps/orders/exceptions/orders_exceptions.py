@@ -2,6 +2,7 @@ from dataclasses import dataclass
 
 from core.apps.orders.config.order_config import (
     BASE_EXCEPTION_ORDERS,
+    COULD_NOT_CREATE_ORDER_ITEM,
     INSUFFICIENT_QUANTITY,
     PRODUCT_NOT_FOUND_EXCEPTION,
 )
@@ -28,3 +29,10 @@ class NotFoundProductException(BaseExceptionOrder):
     @property
     def message(self):
         return f"{PRODUCT_NOT_FOUND_EXCEPTION.format(product_id=self.product)}"
+
+
+@dataclass
+class OrderItemsCreationException(BaseExceptionOrder):
+    @property
+    def message(self):
+        return f"{COULD_NOT_CREATE_ORDER_ITEM}"

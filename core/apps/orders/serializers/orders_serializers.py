@@ -12,14 +12,9 @@ class OrdersSerializer(serializers.Serializer):
     phone_number = serializers.CharField(max_length=60)
     order_items = OrderItemSerializer(many=True)
     required_delivery = serializers.BooleanField(default=False)
-    delivery_address = serializers.CharField(max_length=100)
+    delivery_address = serializers.CharField(max_length=60)
     payment_on_get = serializers.BooleanField(default=True)
     email = serializers.EmailField()
-
-    def validate_email(self, value):
-        if len(value) <= 0:
-            raise serializers.ValidationError('Email must be a more than zero length')
-        return value
 
     def to_entity(self):
         return {
