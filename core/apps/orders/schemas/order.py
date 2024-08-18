@@ -41,3 +41,8 @@ class OrderItemsResponseSchema:
 @dataclass
 class OrderItemsSchema:
     items: List[OrderItemsResponseSchema]
+
+
+@dataclass
+class ValidateProductsQuantityId:
+    list_of_product_quntity_and_ids: List[OrderProductItemSchema]

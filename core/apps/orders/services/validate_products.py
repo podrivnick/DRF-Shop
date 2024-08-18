@@ -7,7 +7,14 @@ from core.apps.orders.exceptions.orders_exceptions import (
     NotEnoughQuantityProducts,
     NotFoundProductException,
 )
-from core.apps.products.models.products import Product as ProductModel
+from core.apps.orders.schemas.order import (
+    OrderItemsSchema,
+    ValidateProductsQuantityId,
+)
+from core.apps.products.services.products import (
+    BaseProductsFilter,
+    ProductsFilterById,
+)
 
 
 class BaseValidateProductService(ABC):
@@ -18,20 +25,23 @@ class BaseValidateProductService(ABC):
 
 class ORMValidateProductService(BaseValidateProductService):
     # *order_items_data: [{'product_id': 1, 'quantity': 2}, {'product_id': 3, 'quantity': 1}]
-    def check_products(self, order_items_data: list) -> int:
+    def check_products(
+        self,
+        order_items_data: ValidateProductsQuantityId,
+        filter_products_by_id: BaseProductsFilter = ProductsFilterById(),
+    ) -> tuple[int, OrderItemsSchema]:
         # All ID's are required
-        product_ids = (item['product_id'] for item in order_items_data)
+        product_ids = (item.product_id for item in order_items_data.list_of_product_quntity_and_ids)
 
-        products = ProductModel.objects.filter(pk__in=product_ids)
-
+        products = filter_products_by_id.filter_products(product_ids=product_ids)
         products_dict = {product.pk: product for product in products}
 
         total_price = 0
         all_data_products = []
 
-        for product in order_items_data:
-            product_id = product['product_id']
-            quantity = product['quantity']
+        for product in order_items_data.list_of_product_quntity_and_ids:
+            product_id = product.product_id
+            quantity = product.quantity
 
             if product_id not in products_dict:
                 raise NotFoundProductException(product=product_id)
@@ -52,4 +62,4 @@ class ORMValidateProductService(BaseValidateProductService):
             else:
                 raise NotEnoughQuantityProducts(product=product_id)
 
-        return total_price, all_data_products
+        return total_price, OrderItemsSchema(all_data_products)

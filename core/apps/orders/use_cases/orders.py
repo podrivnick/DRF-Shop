@@ -2,36 +2,38 @@ from dataclasses import dataclass
 
 from core.apps.orders.exceptions.orders_exceptions import BaseExceptionOrder
 from core.apps.orders.schemas.order import (
-    OrderItemsSchema,
     OrderSchema,
+    ValidateProductsQuantityId,
 )
-from core.apps.orders.services.order_service import ORMCreateOrderService
-from core.apps.orders.services.validate_products import ORMValidateProductService
+from core.apps.orders.services.order_service import BaseOrderCreateService
+from core.apps.orders.services.validate_products import BaseValidateProductService
 
 
 @dataclass
 class CreateOrdersUseCase:
+    validate_products: BaseValidateProductService
+    order: BaseOrderCreateService
+
     def execute(
         self,
-        serializer,
+        serializer: dict,
     ) -> OrderSchema:
-
         try:
-            validate_products = ORMValidateProductService()
-            total_price, products_required_id = validate_products.check_products(serializer['order_items'])
+            order_products_data = ValidateProductsQuantityId(serializer["order_items"])
+            total_price, products_required_data = self.validate_products.check_products(
+                order_items_data=order_products_data,
+            )
+
         except BaseExceptionOrder as error:
             print(error.message)
 
         serializer['total_price'] = total_price
 
-        order = ORMCreateOrderService()
+        order_dto = self.order.create_order(OrderSchema(**serializer))
 
-        order_dto = order.create_order(OrderSchema(**serializer))
         try:
-            create_order_items = order.create_order_items(order_dto, OrderItemsSchema(products_required_id))
+            self.order.create_order_items(order_dto, products_required_data)
         except BaseExceptionOrder as exception:
             print(exception.message)
 
-        print(f"{order_dto} to ----- {create_order_items}")
-
-        return order_dto if order_dto else ValueError('Invalid make order')
+        return order_dto
