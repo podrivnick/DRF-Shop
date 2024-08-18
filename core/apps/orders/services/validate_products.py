@@ -55,6 +55,7 @@ class ORMValidateProductService(BaseValidateProductService):
                     {
                         'product': product_id,
                         'title': products_dict[product_id].title,
+                        'discount': products_dict[product_id].discount,
                         'price': price_with_quantity,
                         'quantity': quantity,
                     },

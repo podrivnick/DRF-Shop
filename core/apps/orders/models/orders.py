@@ -69,6 +69,13 @@ class OrdersItem(models.Model):
     title = models.CharField(max_length=150, verbose_name="Название")
     price = models.DecimalField(max_digits=7, decimal_places=2, verbose_name="Цена")
     quantity = models.PositiveIntegerField(default=0, verbose_name="Количество")
+    discount = models.DecimalField(
+        blank=True,
+        max_digits=10,
+        decimal_places=2,
+        default=0.00,
+        verbose_name='Скидка товара',
+    )
 
     class Meta:
         db_table = "orders_item"
@@ -95,4 +102,5 @@ class OrdersItem(models.Model):
             title=item_product.title,
             price=item_product.price,
             quantity=item_product.quantity,
+            discount=item_product.discount,
         )

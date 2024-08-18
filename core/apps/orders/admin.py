@@ -34,4 +34,5 @@ class OrdersItemAdmin(admin.ModelAdmin):
         'title',
         'price',
         'quantity',
+        'discount',
     )

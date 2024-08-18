@@ -28,7 +28,6 @@ class CreateOrdersUseCase:
             print(error.message)
 
         serializer['total_price'] = total_price
-
         order_dto = self.order.create_order(OrderSchema(**serializer))
 
         try:

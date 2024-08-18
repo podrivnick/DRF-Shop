@@ -37,7 +37,7 @@ class CreateOrdersAPI(generics.CreateAPIView):
 
             raise CustomExceptionForUseCaseOrder(
                 detail=error.message,
-                status_code=422,  # Замените на нужный статус код
+                status_code=422,
                 extra_data={'some_field': 'some_value'},
             )
 

@@ -36,11 +36,17 @@ class OrderItemsResponseSchema:
     title: str
     price: Decimal
     quantity: int
+    discount: Decimal = Decimal(0)
 
 
 @dataclass
 class OrderItemsSchema:
     items: List[OrderItemsResponseSchema]
+
+    def __eq__(self, other):
+        if not isinstance(other, OrderItemsSchema):
+            return False
+        return self.items == other.items
 
 
 @dataclass
