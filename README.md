@@ -136,7 +136,8 @@ ___
 + **Repository Pattern**
 + **Configuration Management** (dotenv)
 + **Factory Pattern**
-+ **Dependency Injection**: (Depends)
++ **Dependency Injection**: (punq)
++ **Specification Pattern**
 
 ## Author
 Author of the backend: ***Rybakov Artem***  (https://github.com/podrivnick)

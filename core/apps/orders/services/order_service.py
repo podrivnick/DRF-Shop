@@ -8,7 +8,7 @@ from django.db import (
     transaction,
 )
 
-from core.apps.orders.exceptions.orders_exceptions import OrderItemsCreationException
+from core.apps.orders.exceptions.database_orders_exceptions import OrderItemsCreationException
 from core.apps.orders.models.orders import (
     Order as OrderModel,
     OrdersItem as OrdersItemModel,

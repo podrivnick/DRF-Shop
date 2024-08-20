@@ -3,7 +3,7 @@ from abc import (
     abstractmethod,
 )
 
-from core.apps.orders.exceptions.orders_exceptions import (
+from core.apps.orders.exceptions.database_orders_exceptions import (
     NotEnoughQuantityProducts,
     NotFoundProductException,
 )

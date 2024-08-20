@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from core.apps.orders.exceptions.orders_exceptions import BaseExceptionOrder
+from core.apps.orders.exceptions.base_order_exception import BaseExceptionOrder
 from core.apps.orders.schemas.order import (
     OrderSchema,
     ValidateProductsQuantityId,
@@ -28,8 +28,9 @@ class CreateOrdersUseCase:
                 serializer['email'],
             )
             print(validate_order_checker)
-        except ValueError:
-            raise ValueError("Invalid name receiver kookkokok")
+        except BaseExceptionOrder as exception:
+            print(exception.message)
+            return
 
         try:
             order_products_data = ValidateProductsQuantityId(
@@ -44,7 +45,6 @@ class CreateOrdersUseCase:
             print(error.message)
 
         serializer['total_price'] = total_price
-        print(serializer)
         order_dto = self.order.create_order(OrderSchema(**serializer))
 
         try:
