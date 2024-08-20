@@ -98,9 +98,9 @@ class OrdersItem(models.Model):
     ) -> 'OrdersItem':
         return cls(
             order_id=order_id,
-            product_id=item_product.product,
-            title=item_product.title,
-            price=item_product.price,
-            quantity=item_product.quantity,
-            discount=item_product.discount,
+            product_id=item_product['product'],
+            title=item_product['title'],
+            price=item_product['price'],
+            quantity=item_product['quantity'],
+            discount=item_product['discount'],
         )

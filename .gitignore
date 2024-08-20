@@ -9,6 +9,7 @@ __pycache__/
 .vscode/
 backups/
 nginx/
+.pytest_cache/
 
 docker_compose/nginx.yaml
 

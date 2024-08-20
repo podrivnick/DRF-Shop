@@ -31,7 +31,7 @@ class ORMValidateProductService(BaseValidateProductService):
         filter_products_by_id: BaseProductsFilter = ProductsFilterById(),
     ) -> tuple[int, OrderItemsSchema]:
         # All ID's are required
-        product_ids = (item.product_id for item in order_items_data.list_of_product_quntity_and_ids)
+        product_ids = (item['product_id'] for item in order_items_data.list_of_product_quntity_and_ids)
 
         products = filter_products_by_id.filter_products(product_ids=product_ids)
         products_dict = {product.pk: product for product in products}
@@ -40,8 +40,8 @@ class ORMValidateProductService(BaseValidateProductService):
         all_data_products = []
 
         for product in order_items_data.list_of_product_quntity_and_ids:
-            product_id = product.product_id
-            quantity = product.quantity
+            product_id = product['product_id']
+            quantity = product['quantity']
 
             if product_id not in products_dict:
                 raise NotFoundProductException(product=product_id)
@@ -63,4 +63,4 @@ class ORMValidateProductService(BaseValidateProductService):
             else:
                 raise NotEnoughQuantityProducts(product=product_id)
 
-        return total_price, OrderItemsSchema(all_data_products)
+        return total_price, OrderItemsSchema(items=all_data_products)

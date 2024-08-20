@@ -14,6 +14,10 @@ from core.apps.orders.services.validate_products import (
     BaseValidateProductService,
     ORMValidateProductService,
 )
+from core.apps.orders.services.validation_order import (
+    BaseValidationOrderService,
+    ValidationOrderDataService,
+)
 from core.apps.orders.use_cases.orders import CreateOrdersUseCase
 
 
@@ -29,6 +33,7 @@ def _initialize_container() -> punq.Container:
     container.register(Logger, factory=getLogger, name='django.request')
 
     # init services
+    container.register(BaseValidationOrderService, ValidationOrderDataService)
     container.register(BaseValidateProductService, ORMValidateProductService)
     container.register(BaseOrderCreateService, ORMCreateOrderService)  # noqa  
 
