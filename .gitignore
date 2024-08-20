@@ -4,11 +4,11 @@
 !core/project/settings/local.py
 core/project/settings/local.py
 
-__pycache__/
 .idea/
 .vscode/
+.pytest_cache/
+__pycache__/
 backups/
-nginx/
 
 docker_compose/nginx.yaml
 
