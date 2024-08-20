@@ -5,10 +5,10 @@ from rest_framework import (
     permissions,
     status,
 )
-from rest_framework.response import Response
 
 import orjson
 
+from core.api.base_response import StandartResponseAPI
 from core.apps.common.base_exceptions import (
     CustomExceptionForUseCaseOrder,
     ServiceException,
@@ -18,7 +18,10 @@ from core.apps.orders.use_cases.orders import CreateOrdersUseCase
 from core.project.containers import get_container
 
 
-class CreateOrdersAPI(generics.CreateAPIView):
+class CreateOrdersAPI(
+    generics.CreateAPIView,
+    StandartResponseAPI,
+):
     serializer_class = OrdersSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -31,6 +34,11 @@ class CreateOrdersAPI(generics.CreateAPIView):
                 serializer=serializer.to_entity(),
             )
 
+            return self.create_response(
+                data=result,
+                status_code=status.HTTP_201_CREATED,
+                message="Order created successfully",
+            )
         except ServiceException as error:
             logger: Logger = container.resolve(Logger)
             logger.error(msg='User could not create review', extra={'error_meta': orjson.dumps(error).decode()})
@@ -40,5 +48,3 @@ class CreateOrdersAPI(generics.CreateAPIView):
                 status_code=422,
                 extra_data={'some_field': 'some_value'},
             )
-
-        return Response(result, status=status.HTTP_201_CREATED, headers=self.headers)
