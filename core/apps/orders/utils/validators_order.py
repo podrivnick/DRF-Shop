@@ -1,45 +1,15 @@
-from abc import (
-    ABC,
-    abstractmethod,
-)
 from dataclasses import (
     dataclass,
     field,
-)
-from typing import (
-    Any,
-    Tuple,
 )
 
 from core.apps.orders.exceptions.validation_orders_exceptions import (
     IsNameReceiverNotAlphabeticSpec,
     NameReceiverIsEmpty,
+    PhoneNumberContainsNotAllowedSymblos,
     TooMuchLengthNameReceiver,
 )
-
-
-@dataclass(frozen=True)
-class Specification(ABC):
-    @abstractmethod
-    def is_satisfied(self, item: Any) -> bool:
-        pass
-
-    def and_spec(self, other: 'Specification') -> 'AndSpecification':
-        return AndSpecification((self, other))
-
-
-@dataclass(frozen=True)
-class AndSpecification(Specification):
-    specs: Tuple[Specification, ...]
-
-    def is_satisfied(self, item: Any) -> bool:
-        return all(spec.is_satisfied(item) for spec in self.specs)
-
-
-@dataclass(frozen=True)
-class IsStringSpec(Specification):
-    def is_satisfied(self, item: Any) -> bool:
-        return isinstance(item, str)
+from core.apps.orders.utils.base_spec import Specification
 
 
 # max length  noqa
@@ -68,4 +38,16 @@ class IsAlphabeticSpec(Specification):
     def is_satisfied(self, item: str) -> bool:
         if not item.replace(" ", "").isalpha():
             raise IsNameReceiverNotAlphabeticSpec()
+        return True
+
+
+# Spec for check phone number for symblols  noqa
+@dataclass(frozen=True)
+class AllowedCharactersSpec(Specification):
+    _allowed_chars: str = field(default="+-")
+
+    def is_satisfied(self, item: str) -> bool:
+        cleaned_item = item.replace(" ", "").replace("-", "").replace("+", "")
+        if not cleaned_item.isdigit():
+            raise PhoneNumberContainsNotAllowedSymblos()
         return True
