@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from core.apps.orders.config.order_config import (
+    MAX_LENGTH_DELIVERY_ADDRESS,
     MAX_LENGTH_NAME_RECEIVER,
     MAX_LENGTH_PHONE_NUMBER,
 )
@@ -14,6 +15,9 @@ from core.apps.orders.utils.validators_order import (
     IsAlphabeticSpec,
     IsNotEmptySpec,
     MaxLengthSpec,
+    NoSpecialCharactersSpec,
+    ValidDomainSpec,
+    ValidEmailSpec,
 )
 
 
@@ -48,8 +52,11 @@ class PhoneNumber(BaseValidatorOrder[str]):
 @dataclass(frozen=True)
 class DeliveryAddress(BaseValidatorOrder[str]):
     def validate(self):
-        if not isinstance(self.value, str) or len(self.value) > 60:
-            raise ValueError("Invalid name receiver")
+        delivery_address_spec = IsStringSpec().and_spec(IsNotEmptySpec()).\
+                                    and_spec(MaxLengthSpec(MAX_LENGTH_DELIVERY_ADDRESS)).\
+                                    and_spec(NoSpecialCharactersSpec())  # noqa
+
+        delivery_address_spec.is_satisfied(self.value)
 
     def as_generic_type(self):
         return str(self.value)
@@ -58,8 +65,11 @@ class DeliveryAddress(BaseValidatorOrder[str]):
 @dataclass(frozen=True)
 class Email(BaseValidatorOrder[str]):
     def validate(self):
-        if not isinstance(self.value, str) or len(self.value) > 60:
-            raise ValueError("Invalid name receiver")
+        email_spec = IsStringSpec().and_spec(IsNotEmptySpec()).\
+                        and_spec(ValidDomainSpec()).\
+                        and_spec(ValidEmailSpec())   # noqa
+
+        email_spec.is_satisfied(self.value)
 
     def as_generic_type(self):
         return str(self.value)

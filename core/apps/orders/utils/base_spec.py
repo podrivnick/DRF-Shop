@@ -8,16 +8,22 @@ from typing import (
     Tuple,
 )
 
-from core.apps.orders.exceptions.validation_orders_exceptions import PhoneNumberContainsNotOnlyDigits
+from core.apps.orders.exceptions.validation_orders_exceptions import PhoneNumberContainsNotOnlyDigitsException
 
 
 @dataclass(frozen=True)
 class Specification(ABC):
     @abstractmethod
-    def is_satisfied(self, item: Any) -> bool:
+    def is_satisfied(
+        self,
+        item: Any,
+    ) -> bool:
         pass
 
-    def and_spec(self, other: 'Specification') -> 'AndSpecification':
+    def and_spec(
+        self,
+        other: 'Specification',
+    ) -> 'AndSpecification':
         return AndSpecification((self, other))
 
 
@@ -25,13 +31,19 @@ class Specification(ABC):
 class AndSpecification(Specification):
     specs: Tuple[Specification, ...]
 
-    def is_satisfied(self, item: Any) -> bool:
+    def is_satisfied(
+        self,
+        item: Any,
+    ) -> bool:
         return all(spec.is_satisfied(item) for spec in self.specs)
 
 
 @dataclass(frozen=True)
 class IsStringSpec(Specification):
-    def is_satisfied(self, item: Any) -> bool:
+    def is_satisfied(
+        self,
+        item: Any,
+    ) -> bool:
         return isinstance(item, str)
 
 
@@ -44,5 +56,5 @@ class IsNumericSpec(Specification):
         cleaned_item = item.replace("-", "").replace("+", "")
 
         if not cleaned_item.isdigit():
-            raise PhoneNumberContainsNotOnlyDigits()
+            raise PhoneNumberContainsNotOnlyDigitsException()
         return True
