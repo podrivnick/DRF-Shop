@@ -183,9 +183,10 @@ ELASTIC_APM = {
     'USE_ELASTIC_EXCEPTHOOK': True,
 }
 
+
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
             'format': (
@@ -211,8 +212,17 @@ LOGGING = {
             'handlers': ['console'],
             'propagate': False,
         },
+        'apm-server': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'elasticapm'],
+            'propagate': True,
+        },
+        'elasticapm': {  # Логи APM
+            'level': 'DEBUG',
+            'handlers': ['elasticapm'],
+            'propagate': False,
+        },
     },
 }
-
 # ELASTIC_URL = env('ELASTIC_URL')  noqa
 # ELASTIC_PRODUCT_INDEX = env('ELASTIC_PRODUCT_INDEX', default='product-index')  noqa

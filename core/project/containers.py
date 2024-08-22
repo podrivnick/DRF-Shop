@@ -30,12 +30,12 @@ def _initialize_container() -> punq.Container:
     container = punq.Container()
 
     # init internal stuff
-    container.register(Logger, factory=getLogger, name='django.request')
+    container.register(Logger, factory=getLogger, name='apm-server')
 
     # init services
     container.register(BaseValidationOrderService, ValidationOrderDataService)
     container.register(BaseValidateProductService, ORMValidateProductService)
-    container.register(BaseOrderCreateService, ORMCreateOrderService)  # noqa  
+    container.register(BaseOrderCreateService, ORMCreateOrderService)  # noqa
 
     # init use cases
     container.register(CreateOrdersUseCase)

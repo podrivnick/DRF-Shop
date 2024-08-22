@@ -53,7 +53,7 @@ class IsNumericSpec(Specification):
         self,
         item: str,
     ) -> bool:
-        cleaned_item = item.replace("-", "").replace("+", "")
+        cleaned_item = item.replace(" ", "").replace("-", "").replace("+", "")
 
         if not cleaned_item.isdigit():
             raise PhoneNumberContainsNotOnlyDigitsException()

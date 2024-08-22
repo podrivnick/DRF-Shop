@@ -11,7 +11,6 @@ from django.db import DatabaseError
 import pytest
 
 from core.apps.orders.schemas.order import (
-    OrderItemsResponseSchema,
     OrderItemsSchema,
     OrderSchema,
 )
@@ -122,10 +121,12 @@ class TestORMCreateOrderService:
         # Arrange
         service: BaseOrderCreateService = ORMCreateOrderService()
 
-        order_items_schema = OrderItemsSchema([
-            {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
-            {'product': 3, 'title': 'monitor', 'discount': 0, 'price': 1000, 'quantity': 1},
-        ])
+        order_items_schema = OrderItemsSchema(
+            items=[
+                {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
+                {'product': 3, 'title': 'monitor', 'discount': 0, 'price': 1000, 'quantity': 1},
+            ],
+        )
 
         # Create mock objects for each item
         mock_order_items = [MagicMock() for _ in order_items_schema.items]
@@ -148,8 +149,8 @@ class TestORMCreateOrderService:
         # Convert order_items_schema to expected result format if necessary
         expected_result = OrderItemsSchema(
             items=[
-                OrderItemsResponseSchema(product=1, title='charge', price=Decimal('500'), quantity=1, discount=Decimal('50')),
-                OrderItemsResponseSchema(product=3, title='monitor', price=Decimal('1000'), quantity=1, discount=Decimal('0')),
+                {'product': 1, 'title': 'charge', 'price': Decimal('500'), 'quantity': 1, 'discount': Decimal('50')},
+                {'product': 3, 'title': 'monitor', 'price': Decimal('1000'), 'quantity': 1, 'discount': Decimal('0')},
             ],
         )
 
@@ -181,9 +182,11 @@ class TestORMCreateOrderService:
 
         # Arrange
         service: BaseOrderCreateService = ORMCreateOrderService()
-        order_items_schema = OrderItemsSchema([
-            {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
-        ])
+        order_items_schema = OrderItemsSchema(
+            items=[
+                {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
+            ],
+        )
         MockOrdersItem.objects.bulk_create.side_effect = DatabaseError("Database error")
 
         # Act / Assert

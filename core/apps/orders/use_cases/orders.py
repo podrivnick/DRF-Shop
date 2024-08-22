@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 
+from core.apps.common.base_exceptions import ServiceException
 from core.apps.orders.exceptions.base_order_exception import BaseExceptionOrder
 from core.apps.orders.schemas.order import (
     OrderSchema,
@@ -30,7 +31,7 @@ class CreateOrdersUseCase:
             print(validate_order_checker)
         except BaseExceptionOrder as exception:
             print(exception.message)
-            return
+            raise ServiceException()
 
         try:
             order_products_data = ValidateProductsQuantityId(
@@ -43,6 +44,7 @@ class CreateOrdersUseCase:
 
         except BaseExceptionOrder as error:
             print(error.message)
+            raise ServiceException()
 
         serializer['total_price'] = total_price
         order_dto = self.order.create_order(OrderSchema(**serializer))
@@ -51,5 +53,6 @@ class CreateOrdersUseCase:
             self.order.create_order_items(order_dto, products_required_data)
         except BaseExceptionOrder as exception:
             print(exception.message)
+            raise ServiceException()
 
         return order_dto

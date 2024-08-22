@@ -10,7 +10,7 @@ from core.apps.orders.exceptions.validation_orders_exceptions import (
     IncorrectDomainEmailException,
     IncorrectFormatEmailException,
     IsNameReceiverNotAlphabeticSpecException,
-    PhoneNumberContainsNotOnlyDigitsException,
+    PhoneNumberContainsNotAllowedSymblosException,
     SomeOrderDataIsEmptyException,
     TooMuchLengthNameReceiverException,
 )
@@ -59,27 +59,32 @@ class IsAlphabeticSpec(Specification):
 @dataclass(frozen=True)
 class AllowedCharactersSpec(Specification):
     _allowed_chars: str = field(default="+-")
+    _phone_pattern: Pattern[str] = field(default_factory=lambda: re.compile(r"^\+?\d{1,3}[\s.-]?\(?\d{1,4}?\)?[\s.-]?\d{1,4}[\s.-]?\d{1,4}[\s.-]?\d{1,9}$"))
 
     def is_satisfied(
         self,
         item: str,
     ) -> bool:
-        cleaned_item = item.replace(" ", "").replace("-", "").replace("+", "")
-        if not cleaned_item.isdigit():
-            raise PhoneNumberContainsNotOnlyDigitsException()
+        for char in item:
+            if not (char.isdigit() or char in self._allowed_chars or char.isspace()):
+                raise PhoneNumberContainsNotAllowedSymblosException()
+
+        # Проверка на соответствие шаблону
+        if not self._phone_pattern.match(item):
+            raise PhoneNumberContainsNotAllowedSymblosException()
         return True
 
 
 # Spec for delivery address  noqa
 @dataclass(frozen=True)
 class NoSpecialCharactersSpec(Specification):
-    forbidden_chars: str = field(default="!@#$%^&*()[]{};:'\"<>?\\|`~")
+    _forbidden_chars: str = field(default="!@#$%^&*()[]{};:'\"<>?\\|`~")
 
     def is_satisfied(
         self,
         item: str,
     ) -> bool:
-        if any(char in self.forbidden_chars for char in item):
+        if any(char in self._forbidden_chars for char in item):
             raise DeliveryAddressNotAllowedSymbolsException()
         return True
 

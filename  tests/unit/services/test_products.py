@@ -6,7 +6,7 @@ r"""
 
 import pytest
 
-from core.apps.orders.exceptions.orders_exceptions import (
+from core.apps.orders.exceptions.database_orders_exceptions import (
     NotEnoughQuantityProducts,
     NotFoundProductException,
 )
@@ -26,16 +26,20 @@ def test_check_products_valid():
     product_2 = ProductModelFactory.create(pk=3, quantity=5, price=1000, discount=0, title="monitor")   # noqa
 
     # Expected data for response
-    all_data_products = OrderItemsSchema([
-        {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
-        {'product': 3, 'title': 'monitor', 'discount': 0, 'price': 1000, 'quantity': 1},
-    ])
+    all_data_products = OrderItemsSchema(
+        items=[
+            {'product': 1, 'title': 'charge', 'discount': 50, 'price': 500, 'quantity': 1},
+            {'product': 3, 'title': 'monitor', 'discount': 0, 'price': 1000, 'quantity': 1},
+        ],
+    )
 
     # Enter data for testing
-    order_items_data = ValidateProductsQuantityId([
-        {'product_id': 1, 'quantity': 1},
-        {'product_id': 3, 'quantity': 1},
-    ])
+    order_items_data = ValidateProductsQuantityId(
+        list_of_product_quntity_and_ids=[
+            {'product_id': 1, 'quantity': 1},
+            {'product_id': 3, 'quantity': 1},
+        ],
+    )
 
     service = ORMValidateProductService()
 
@@ -49,10 +53,12 @@ def test_check_products_valid():
 def test_check_products_not_found():
     product_1 = ProductModelFactory.create(pk=1, quantity=10, price=100)  # noqa
 
-    order_items_data = ValidateProductsQuantityId([
-        {'product_id': 1, 'quantity': 2},
-        {'product_id': 2, 'quantity': 1},
-    ])
+    order_items_data = ValidateProductsQuantityId(
+        list_of_product_quntity_and_ids=[
+            {'product_id': 1, 'quantity': 2},
+            {'product_id': 2, 'quantity': 1},
+        ],
+    )
 
     service = ORMValidateProductService()
 
@@ -67,9 +73,11 @@ def test_check_products_not_enough_quantity():
     # Tests Products
     product_1 = ProductModelFactory.create(pk=1, quantity=1, price=100)  # noqa
 
-    order_items_data = ValidateProductsQuantityId([
-        {'product_id': 1, 'quantity': 2},
-    ])
+    order_items_data = ValidateProductsQuantityId(
+        list_of_product_quntity_and_ids=[
+            {'product_id': 1, 'quantity': 2},
+        ],
+    )
 
     service = ORMValidateProductService()
 
