@@ -49,7 +49,7 @@ storages-down:
 .PHONY: storages-logs
 storages-logs:
 	${LOGS} ${DB_CONTAINER} -f
- 
+
 .PHONY: app
 app:
 	${DC} -f ${APP_FILE} -f ${STORAGES_FILE} -f ${STORAGES_FILE_COPY} ${ENV_FILE} up -d

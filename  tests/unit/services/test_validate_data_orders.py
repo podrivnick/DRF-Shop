@@ -7,6 +7,7 @@ from core.apps.orders.exceptions.validation_orders_exceptions import (
     IsNameReceiverNotAlphabeticSpecException,
     PhoneNumberContainsNotAllowedSymblosException,
     PhoneNumberContainsNotOnlyDigitsException,
+    SomeOrderDataIsEmptyException,
     TooMuchLengthNameReceiverException,
 )
 from core.apps.orders.services.validation_order import ValidationOrderDataService
@@ -98,4 +99,32 @@ class TestYourValidationService:
                 phone_number="+1-234-567-890",
                 delivery_address="Some valid address",
                 email="@domain.com",
+            )
+
+    # test for empty data
+    def test_empty_name_receiver(self, validation_service):
+        with pytest.raises(SomeOrderDataIsEmptyException):
+            validation_service.validated_data_order(
+                name_receiver="",
+                phone_number="+1-234-567-890",
+                delivery_address="Some valid address",
+                email="@domain.com",
+            )
+
+    def test_empty_delivery_address(self, validation_service):
+        with pytest.raises(SomeOrderDataIsEmptyException):
+            validation_service.validated_data_order(
+                name_receiver="Артем Сырков",
+                phone_number="+1-234-567-890",
+                delivery_address="",
+                email="@domain.com",
+            )
+
+    def test_empty_email(self, validation_service):
+        with pytest.raises(SomeOrderDataIsEmptyException):
+            validation_service.validated_data_order(
+                name_receiver="Артем Сырков",
+                phone_number="+1-234-567-890",
+                delivery_address="Some valid address",
+                email="",
             )

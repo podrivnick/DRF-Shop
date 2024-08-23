@@ -8,8 +8,8 @@ __pycache__/
 .idea/
 .vscode/
 backups/
-nginx/
 .pytest_cache/
+nginx/
 
 docker_compose/nginx.yaml
 
