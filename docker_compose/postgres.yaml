@@ -23,7 +23,7 @@ services:
       start_period: 10s
     env_file:
       - ../.env
-      
+
 volumes:
   ppostgres.data: {}
 

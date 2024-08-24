@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "shop"
+name = "DRF-Shop"
 version = "0.1.0"
 description = ""
 authors = ["podrivnick <vp419193@gmail.com>"]

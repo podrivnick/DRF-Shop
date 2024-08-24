@@ -7,7 +7,6 @@ core/project/settings/local.py
 __pycache__/
 .idea/
 .vscode/
-backups/
 .pytest_cache/
 nginx/
 

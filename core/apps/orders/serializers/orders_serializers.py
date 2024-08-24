@@ -1,9 +1,15 @@
 from rest_framework import serializers
 
 
+def validate_quantity(value):
+    if value < 1:
+        raise serializers.ValidationError("Quantity must be at least 1.")
+    return value
+
+
 class OrderItemSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
-    quantity = serializers.IntegerField(default=1)
+    quantity = serializers.IntegerField(default=1, validators=[validate_quantity])
 
 
 class OrdersSerializer(serializers.Serializer):

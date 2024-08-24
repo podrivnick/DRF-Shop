@@ -1,13 +1,14 @@
-shop/*.pyc
+*.pyc
+*.md
 
-shop/*.md
+.pre-commit-config.yaml
 
-shop/.idea/
-shop/docker_compose/
-shop/__pycache__/
+.pytest_cache/
+.idea/
+.git/
+.vscode/
 
-shop/core/project/settings/local_example.py
+docker_compose/
+__pycache__/
 
-shop/.git/
-shop/.pre-commit-config.yaml
-shop/.vscode/
+core/project/settings/local_example.py

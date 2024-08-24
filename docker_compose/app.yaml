@@ -1,7 +1,7 @@
 services:
   app-drf-shop:
     build:
-      context: ../../shop
+      context: ../../DRF-Shop/
       dockerfile: Dockerfile
     container_name: app-drf-shop
     ports:
@@ -14,7 +14,6 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ../../shop:/shop
       - static_volume:/staticfiles
     networks:
       - ppostgres.network

@@ -21,7 +21,7 @@ class ProductsFilterById(BaseProductsFilter):
 
 
 class ProductsFilterByDiscountAndQuantity(filters.FilterSet):
-    in_stock = filters.BooleanFilter(method='filter_in_stock')
+    in_stock = filters.BooleanFilter(method='filter_in_stock', field_name='In stock')
     discount = filters.NumberFilter(field_name="discount", lookup_expr='gt')
 
     class Meta:

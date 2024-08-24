@@ -6,8 +6,6 @@ This is a non-commercial project, analogous to a marketplace, featuring:
 * **Product Viewing**: Users can view all products as well as individual products by their identifier.
 * **Order Creation System**: A system is implemented for creating orders.
 * **Product Filtering**: Products can be filtered based on availability and discounts.
-* **Product Search**: Users can search for products based on name, description, and tags.
-
 
 
 ### Installation and Running
@@ -28,7 +26,7 @@ ___
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/podrivnick/DRF-Shop.git
-   cd shop
+   cd DRF-Shop
    ```
 
 2. Install all required packages in `Requirements` section.
@@ -61,12 +59,13 @@ ___
 ## Structure
 
 ```plaintext
-Shop/
+DRF-Shop/
 ├── .pre-commit-config.yaml
-├── .flake8   
-├── manage.py                    
+├── .flake8
 ├── .env                         # Environment variables file
 ├── .gitignore
+├── manage.py
+├── pytest.ini                   # Initialize the test
 ├── Dockerfile                   # Dockerfile for creating the application image
 ├── Makefile                     # Makefile for task automation
 ├── README.md                    # Project documentation
@@ -76,17 +75,20 @@ Shop/
 ├── core/                        # Main Django application source code
 │   ├── api/                     # All API
 │   │   ├── v1/                  # version 1
-│   │   │   ├── urls.py
+│   │   │   ├── orders/          # orders app
+│   │   │   │   └──handlers.py
 │   │   │   ├── products/        # products app
 │   │   │   │   └──handlers.py
 │   │   │   ├── users/           # users app
 │   │   │   │   └── handlers.py
+│   │   │   urls.py
+│   │   └── base_response.py
 │   ├── apps/                    # Django applications (modules)
 │   │   ├── common/              # Common app, for base utils and classes
 │   │   │   ├── apps.py
 │   │   │   ├── models.py        # Time base models
 │   │   │   ├── utils/
-│   │   │   │   └── repository.py        
+│   │   │   │   └── repository.py
 │   │   │   └──  base_exceptions # Base custom exception class
 │   │   ├── products/            # Product app
 │   │   │   ├── admin.py
@@ -107,22 +109,41 @@ Shop/
 │   │   │   ├── dependencies/
 │   │   │   └── migrations/
 │   │   ├── orders/              # Order management module
-│   │   │   ├── admin.py
-│   │   │   ├── apps.py
-│   │   │   ├── models.py
-│   │   │   ├── serializers.py
-│   │   │   └── migrations/
+│   │   │   ├── config/
+│   │   │   ├── exceptions/
+│   │   │   │   ├── base_order_exception.py     # BaseExceptionOrder
+│   │   │   │   ├── database_orders_exceptions.py     # Orders create exceptions
+│   │   │   │   └── validation_orders_exceptions.py.     # Validaton Order
+│   │   │   ├── migrations/
+│   │   │   ├── models/
+│   │   │   ├── schemas/
+│   │   │   ├── serializers/
+│   │   │   ├── services/
+│   │   │   ├── use_cases/
+│   │   │   └── utils/           # All Spec's for validation order
 │   ├── project/                 # Project configuration for Django
 │   │   ├── settings/
 │   │   │   ├── local.py         # Local configuration for Django
 │   │   │   ├── main.py          # Main Django configuration for Django
+│   │   ├── middlewares.py       # Middleware configuration for Elasticsearch
+│   │   ├── cantainers.py        # Dependency Injection
 │   │   ├── urls.py
 │   │   ├── wsgi.py              # WSGI configuration for deployment
-│   │   └── asgi.py              
-├── docker_compose/              
+│   │   └── asgi.py
+├── docker_compose/
 │   ├── postgres.yaml            # Docker Compose for PostgreSQL
 │   ├── backup.yaml              # Docker Compose for PostgreSQL backup
+│   ├── monitoring.yaml              # Docker Compose for ElasticSearch
 │   └── app.yaml                 # Docker Compose for app
+├── tests/                       # All tests
+│   ├── unit/
+│   │   ├── services/            # Test services
+│   │   │   ├── conftest.py
+│   │   │   ├── test_create_orders.py
+│   │   │   ├── test_products.py
+│   │   │   └── test_validate_data_orders.py
+│   │   └── factories/           # Factory model for tests
+│   │       └── products.py
 ```
 
 ## Technology
