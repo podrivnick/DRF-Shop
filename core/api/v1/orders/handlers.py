@@ -48,3 +48,12 @@ class CreateOrdersAPI(
                 status_code=422,
                 extra_data={'some_field': 'some_value'},
             )
+
+    def handle_exception(self, exc):
+        if isinstance(exc, CustomExceptionForUseCaseOrder):
+            return self.create_response(
+                data=exc.extra_data,
+                status_code=exc.status_code,
+                message=exc.detail,
+            )
+        return super().handle_exception(exc)

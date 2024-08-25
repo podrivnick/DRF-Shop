@@ -8,6 +8,8 @@ This is a non-commercial project, analogous to a marketplace, featuring:
 * **Product Filtering**: Products can be filtered based on availability and discounts.
 
 
+![API](images/photo_2024-08-25_00-25-07.jpg)
+
 ### Installation and Running
 
 These instructions will help you run the project.

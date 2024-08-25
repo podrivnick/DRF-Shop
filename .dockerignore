@@ -8,6 +8,7 @@
 .git/
 .vscode/
 
+images/
 docker_compose/
 __pycache__/
 
