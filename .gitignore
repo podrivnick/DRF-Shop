@@ -11,5 +11,6 @@ __pycache__/
 nginx/
 
 docker_compose/nginx.yaml
+images/photo_2024-08-25_00-25-07.jpg
 
 !staticfiles/.gitkeep
